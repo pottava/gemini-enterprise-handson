@@ -29,23 +29,3 @@ vendor
 # IDEs
 .vscode/
 .idea/
-
-# ASP
-.backup*
-.cloudbuild
-*/utils
-*/agent_engine_app.py
-*/requirements.txt
-deployment
-frontend
-notebooks
-tests
-deployment_metadata.json
-GEMINI.md
-Makefile
-/agent_engine_app.py
-/.requirements.txt
-/pyproject.toml
-/starter_pack_pyproject.toml
-/starter_pack_README.md
-/uv.lock
