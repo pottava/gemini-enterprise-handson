@@ -4,8 +4,7 @@ import dotenv
 import vertexai
 from vertexai import agent_engines
 
-from calculator.agent import root_agent
-
+from store.agent import root_agent
 
 FLAGS = flags.FLAGS
 flags.DEFINE_string("project_id", None, "Google Cloud project ID.")
@@ -19,21 +18,34 @@ flags.DEFINE_bool("delete", False, "Deletes an existing agent.")
 flags.mark_bool_flags_as_mutual_exclusive(["create", "delete"])
 
 
-def create() -> None:
-    """Creates an agent engine."""
+REQUIREMENTS = [
+    "google-adk[a2a]>=2.2.0",
+    "google-cloud-aiplatform[adk,agent-engines]>=1.157.0",
+    "requests>=2.34.2",
+]
+EXTRA_PACKAGES = ["./store"]
+
+
+def create_or_update() -> None:
+    """Creates a new agent engine, or updates it if one with the same display name already exists."""
     adk_app = agent_engines.AdkApp(agent=root_agent, enable_tracing=True)
 
-    remote_agent = agent_engines.create(
-        adk_app,
-        display_name=root_agent.name,
-        requirements=[
-            "google-adk (>=1.19.0)",
-            "google-cloud-aiplatform[agent-engines] (>=1.128.0)",
-            "absl-py (>=2.2.1,<3.0.0)",
-        ],
-        extra_packages=["./calculator"],
-    )
-    print(f"Created remote agent: {remote_agent.resource_name}")
+    agent_config = {
+        "agent_engine": adk_app,
+        "display_name": root_agent.name,
+        "requirements": REQUIREMENTS,
+        "extra_packages": EXTRA_PACKAGES,
+    }
+
+    existing = list(agent_engines.list(filter=f"display_name={root_agent.name}"))
+    if existing:
+        remote_agent = existing[0]
+        print(f"Found existing agent: {remote_agent.resource_name} — updating...")
+        remote_agent.update(**agent_config)
+        print(f"Updated remote agent: {remote_agent.resource_name}")
+    else:
+        remote_agent = agent_engines.create(**agent_config)
+        print(f"Created remote agent: {remote_agent.resource_name}")
 
 
 def delete(resource_id: str) -> None:
@@ -88,7 +100,7 @@ def main(argv: list[str]) -> None:
     if FLAGS.list:
         list_agents()
     elif FLAGS.create:
-        create()
+        create_or_update()
     elif FLAGS.delete:
         if not FLAGS.resource_id:
             print("resource_id is required for delete")

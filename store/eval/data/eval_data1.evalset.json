@@ -1,0 +1,88 @@
+{
+  "eval_set_id": "store_agent_accuracy",
+  "name": "",
+  "description": "EC サイトエージェントの動作確認用 eval セット",
+  "eval_cases": [
+    {
+      "eval_id": "get_product_categories",
+      "session_input": {
+        "app_name": "store",
+        "user_id": "user",
+        "state": {}
+      },
+      "conversation": [
+        {
+          "invocation_id": "a1b2c3d4-0001-0001-0001-000000000001",
+          "user_content": {
+            "parts": [
+              {
+                "text": "商品カテゴリーの一覧を教えてください。"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "当店のECサイトでは、以下の4つの商品カテゴリーを取り扱っております。\n1. electronics（電子機器）\n2. jewelery（ジュエリー）\n3. men's clothing（メンズ衣料）\n4. women's clothing（レディース衣料）気になるカテゴリーがございましたら、カテゴリーを指定して商品をお探しすることも可能です。お気軽にお申し付けください！"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_product_categories",
+                "args": {}
+              }
+            ],
+            "tool_responses": [],
+            "intermediate_responses": []
+          }
+        }
+      ]
+    },
+    {
+      "eval_id": "get_product_detail",
+      "session_input": {
+        "app_name": "store",
+        "user_id": "user",
+        "state": {}
+      },
+      "conversation": [
+        {
+          "invocation_id": "a1b2c3d4-0002-0002-0002-000000000002",
+          "user_content": {
+            "parts": [
+              {
+                "text": "electronics カテゴリの商品はいくつありますか？"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "「electronics カテゴリの商品は、現在 6 件登録されています。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "name": "get_products_by_category",
+                "args": {
+                  "limit": 0,
+                  "category": "electronics"
+                }
+              }
+            ],
+            "tool_responses": [],
+            "intermediate_responses": []
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,29 +1,37 @@
 {
-  "name": "Calculator-Agent",
+  "name": "Store-Agent",
   "dockerComposeFile": "compose.yaml",
-
-  "service": "agent",
+  "service": "store-agent",
   "workspaceFolder": "/workspace",
-
+  "containerEnv": {
+    "LANG": "ja_JP.UTF-8"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
         "ms-python.python",
         "ms-python.vscode-pylance",
-        "ms-python.black-formatter"
+        "ms-python.black-formatter",
+        "anthropic.claude-code"
       ],
       "settings": {
+        // Security
+        "extensions.autoUpdate": false,
+        // for Git
+        "git.openRepositoryInParentFolders": "always",
+        // for Terminal
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.linkedEditing": true,
+        "files.insertFinalNewline": true,
+        // for Python
         "python.defaultInterpreterPath": "/.venv/bin/python",
         "python.languageServer": "Pylance",
 				"python.analysis.extraPaths": [
 					"/.venv/lib/python3.13/site-packages"
 				],
-        "python-envs.pythonProjects": [],
-        "editor.defaultFormatter": "ms-python.black-formatter",
-        "editor.formatOnSave": true,
-        "git.openRepositoryInParentFolders": "always",
-        "terminal.integrated.defaultProfile.linux": "bash",
-        "files.insertFinalNewline": true
+        "python-envs.pythonProjects": []
       }
     }
   },

@@ -1,8 +1,15 @@
 services:
-  agent:
-    image: calculator-agent
+  store-agent:
+    image: store-agent-image
     build: .
     command: sleep infinity
     volumes:
       - ../:/workspace
       - $HOME/.config/gcloud:/root/.config/gcloud
+    environment:
+      - CLAUDE_CODE_USE_VERTEX=true
+      - ANTHROPIC_VERTEX_PROJECT_ID
+      - ANTHROPIC_MODEL
+      - ANTHROPIC_SMALL_FAST_MODEL
+      - GOOGLE_CLOUD_PROJECT
+      - GEMINI_MODEL

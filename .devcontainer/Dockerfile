@@ -12,6 +12,17 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
     | gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
 RUN apt-get update && apt-get install -y google-cloud-cli
 
+# Node.js and package managers
+ENV NPM_VERSION=11.16.0 \
+    PNPM_VERSION=11.5.0
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
+    && apt-get install -y nodejs
+RUN --mount=type=cache,target=/root/.npm \
+    npm install -g "npm@${NPM_VERSION}" --force && \
+    npm install -g "pnpm@${PNPM_VERSION}" && \
+    npm cache clean --force
+# RUN npx --yes skills add google/skills
+
 # Environment variables
 ENV PYTHONUNBUFFERED 1
 
