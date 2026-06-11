@@ -37,7 +37,8 @@ gcloud config set project "${GOOGLE_CLOUD_PROJECT}"
  "generativelanguage.googleapis.com,
   aiplatform.googleapis.com,
   iamcredentials.googleapis.com,
-  cloudresourcemanager.googleapis.com">
+  cloudresourcemanager.googleapis.com,
+  apphub.googleapis.com">
 </walkthrough-enable-apis>
 
 ## 3. 認証
@@ -149,6 +150,10 @@ uv run -m deployment.deploy --create --location "${GOOGLE_CLOUD_LOCATION}"
 
 `Created remote agent: projects/123456789012/locations/us-central1/reasoningEngines/1234567890123456789`
 
+また、以下の画面からデプロイされたエージェントを確認することもできます。
+
+[https://console.cloud.google.com/agent-platform/runtimes](https://console.cloud.google.com/agent-platform/runtimes)
+
 
 ## 8. Agent Runtime 上のエージェントへアクセス
 
@@ -204,9 +209,15 @@ echo "${response}" | jq -s ".[-1].content.parts"
 
 Agent Runtime にデプロイされた ADK ベースのエージェントは API で会話できるため、どんなプログラミング言語でもこのエージェントに仕事を依頼するアプリケーションが作れます。
 
+
 ## 10. Gemini Enterprise app へ登録（その 1）
 
-作ったエージェントは Gemini Enterprise app へ登録し、同僚たちに使ってもらいましょう。一時フォルダを作り、一般の方が作ってくれたツールをダウンロードします。
+作ったエージェントは Gemini Enterprise app へ登録しましょう。
+
+また Gemini Enterprise アプリケーションを作っていない場合は以下の Wiki を開き、手順に沿って進めましょう。
+[https://github.com/pottava/gemini-enterprise-handson/wiki](https://github.com/pottava/gemini-enterprise-handson/wiki)
+
+Gemini Enterprise アプリケーションに手元のエージェントをアップロードするツールをダウンロードします。
 
 ```bash
 mkdir -p tmp && cd $_
@@ -227,7 +238,7 @@ gemini_enterprise_id=
 `<location>` がロケーションです。
 
 ```bash
-gemini_enterprise_location="global"
+gemini_enterprise_location="us"
 ```
 
 ## 11. Gemini Enterprise app へ登録（その 2）
@@ -267,6 +278,9 @@ EOF
 ```bash
 python3 as_registry_client.py register_agent
 ```
+
+正常に応答が返ってきたようであれば、Gemini Enterprise アプリケーションの管理画面、左側メニューの `エージェント` から確認できます。
+
 
 ## 12. Gemini Enterprise app での利用
 
